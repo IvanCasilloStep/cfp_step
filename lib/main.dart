@@ -8,7 +8,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:cfp_step/auth/login_screen.dart';
 import 'package:cfp_step/dashboard/dashboard.dart';
-
+import 'package:cfp_step/theme/theme.dart';
 import 'firebase_options.dart';
 
 Future<void> backgroundHandler(RemoteMessage message) async {
@@ -32,10 +32,7 @@ class MyApp extends StatelessWidget {
     _notificationService.initialize();
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
-        useMaterial3: true,
-      ),
+      theme: TemaStep.of(context),
       onGenerateInitialRoutes: (String initialRoute) {
         return [
           MaterialPageRoute(
