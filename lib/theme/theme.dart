@@ -20,7 +20,6 @@ class TemaStep {
           onError: AppColors.darkCyan, // Colore del testo quando è posizionato sull'errore
           brightness: Brightness.light, // Luminosità del tema (light o dark)
         ),
-        useMaterial3: true,
         // textTheme: GoogleFonts.interTightTextTheme(),
         buttonTheme: theme.buttonTheme.copyWith(
           minWidth: 50,
@@ -35,6 +34,7 @@ class TemaStep {
           style: OutlinedButton.styleFrom(
               foregroundColor: AppColors.darkCyan, side: const BorderSide(color: AppColors.darkCyan)),
         ),
+
         segmentedButtonTheme: SegmentedButtonThemeData(
           style: ButtonStyle(
             backgroundColor: MaterialStateProperty.resolveWith<Color>(
@@ -64,10 +64,10 @@ class TemaStep {
 }
 
 class AppColors {
-  static const mintGreen = Color(0xFF3CA7B1);
+  static const mintGreen = Color(0xff1c77b9);
   static const lightGreen = Color(0xFF7DCBAF);
   static const darkCyan = Color(0xFF0E312D);
-  static const lightMintGreen = Color(0xFF3CA7B1);
+  static const lightMintGreen = Color(0xFF1C77B9);
   static const lightMint = Color(0xFFD4EEE4);
   static const white = Colors.white;
   static const black = Colors.black;

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:qr_flutter/qr_flutter.dart';
 import '../auth/auth.dart';
+import 'package:google_nav_bar/google_nav_bar.dart'; // Aggiunto import per GoogleNavBar
 
 class QRGeneratorFromJsonPlaceholder extends StatefulWidget {
   const QRGeneratorFromJsonPlaceholder({super.key});
@@ -20,6 +21,7 @@ class _QRGeneratorFromJsonPlaceholderState
   final AuthService _authService = AuthService();
   late Map<String, dynamic> jsonData = {}; // Inizializza con una mappa vuota
   late String qrData = '';
+  int _selectedIndex = 1;
 
   @override
   void initState() {
@@ -67,74 +69,10 @@ END:VCARD
     return Scaffold(
       appBar: AppBar(
         title: const Text('Generatore QR'),
+          centerTitle: true,
+          automaticallyImplyLeading: false
       ),
-      drawer: Drawer(
-        child: FutureBuilder(
-          future: _authService.getUserEmail(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.done) {
-              String? userEmail = snapshot.data;
-              String userInitial = userEmail != null && userEmail.isNotEmpty
-                  ? userEmail[0].toUpperCase()
-                  : 'U';
-              return ListView(
-                padding: EdgeInsets.zero,
-                children: <Widget>[
-                  UserAccountsDrawerHeader(
-                    accountName: const Text('Benvenuto'),
-                    accountEmail: Text(userEmail ?? 'Email non disponibile'),
-                    currentAccountPicture: CircleAvatar(
-                      backgroundColor: Colors.white,
-                      child: Text(userInitial),
-                    ),
-                    decoration: const BoxDecoration(
-                      color: Colors.blue,
-                    ),
-                  ),
-                  ListTile(
-                    title: const Text('QR Code'),
-                    onTap: () {
-                      Navigator.pushReplacementNamed(context, '/qrcode');
-                      // Aggiungi qui la logica per gestire il tap sull'opzione 1
-                    },
-                  ),
-                  ListTile(
-                    title: const Text('Home'),
-                    onTap: () {
-                      Navigator.pushReplacementNamed(context, '/dashboard');
-                      // Aggiungi qui la logica per gestire il tap sull'opzione 1
-                    },
-                  ),
-                  ListTile(
-                    title: const Text('Logout'),
-                    onTap: () async {
-                      try {
-                        // Effettua il logout
-                        await _authService.signOut();
 
-                        // Naviga alla schermata di accesso
-                        // ignore: use_build_context_synchronously
-                        Navigator.pushReplacementNamed(context, '/login');
-                      } catch (e) {
-                        // ignore: avoid_print
-                        print('Errore durante il logout: $e');
-                        // Puoi gestire l'errore mostrando un messaggio all'utente o effettuando altre azioni necessarie
-                      }
-                    },
-                  ),
-                ],
-              );
-            } else {
-              return const DrawerHeader(
-                decoration: BoxDecoration(
-                  color: Colors.blue,
-                ),
-                child: Text('Caricamento...'),
-              );
-            }
-          },
-        ),
-      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -153,6 +91,59 @@ END:VCARD
           ],
         ),
       ),
+      bottomNavigationBar: Container(
+          decoration: BoxDecoration(color: Colors.white, boxShadow: [
+            BoxShadow(blurRadius: 20, color: Colors.black.withOpacity(.1))
+          ]),
+          child: SafeArea(
+          child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+      child: GNav(
+        gap: 8,
+        activeColor: Colors.blue,
+        iconSize: 24,
+        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+        duration: Duration(milliseconds: 600),
+        tabBackgroundColor: Colors.black38,
+        tabs: const [
+          GButton(
+            icon: Icons.home,
+            text: 'Home',
+          ),
+
+          GButton(
+            icon: Icons.qr_code,
+            text: 'Qr Code',
+
+          ),
+          GButton(
+            icon: Icons.person,
+            text: 'Profilo',
+          ),
+        ],
+        selectedIndex: _selectedIndex,
+
+        onTabChange: (index) {
+          setState(() {
+            _selectedIndex = index;
+            if (index == 0) {
+              // Navigate to the Favorites page
+              Navigator.pushNamed(context, '/dashboard');
+            }
+            if (index == 1) {
+              // Navigate to the Favorites page
+              Navigator.pushNamed(context, '/qrcode');
+            }
+            if (index == 2) {
+              // Navigate to the Favorites page
+              Navigator.pushNamed(context, '/profilo');
+            }
+          });
+        },
+      ),
+    )
+    )
+      )
     );
   }
 }

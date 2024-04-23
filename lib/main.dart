@@ -48,7 +48,7 @@ class MyApp extends StatelessWidget {
           case '/registration':
             return MaterialPageRoute(builder: (context) => RegistrationScreen());
           case '/dashboard':
-            return MaterialPageRoute(builder: (context) => const DashboardScreen());
+            return MaterialPageRoute(builder: (context) => DashboardScreen());
           case '/qrcode':
             return MaterialPageRoute(builder: (context) => const QRGeneratorFromJsonPlaceholder());
           default:
